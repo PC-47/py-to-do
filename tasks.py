@@ -63,9 +63,13 @@ def remove(task_indexes: int):
 
 cli.add_command(list)
 cli.add_command(add)
+cli.add_command(add, name='a')
 cli.add_command(complete)
+cli.add_command(complete, name='c')
 cli.add_command(uncomplete)
+cli.add_command(uncomplete, name='uc')
 cli.add_command(remove)
+cli.add_command(remove, name='r')
 
 def export_tasks(filename: str, tasks: list) -> None:
     try:
