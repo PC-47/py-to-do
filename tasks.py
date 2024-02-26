@@ -15,18 +15,18 @@ def cli(ctx):
 def list():
     '''Default function, prints list of all tasks'''
     tasks: list = import_tasks(tasks_file)
-    print("-" * 64)
-    print("| Index | Completion | Task                                    |")
-    print("-" * 64)
+    print("-" * 66)
+    print("| Index | Completion | Task                                      |")
+    print("-" * 66)
     for index,task in enumerate(tasks):
         output: str = f"|  {index:03}  |"
         if not task['complete']:
             output += "            |"
         else:
             output += "    done    |"
-        output += f" {task['task']:39} |"
+        output += f" {task['task']:41} |"
         click.echo(output)
-    print("-" * 64)
+    print("-" * 66)
 
 @click.command()
 @click.argument('task_name', type=str)
@@ -61,6 +61,12 @@ def remove(task_indexes: int):
         tasks.pop(index)
         export_tasks(tasks_file, tasks)
 
+@click.command()
+def clear():
+    tasks = []
+    export_tasks(tasks_file, tasks)
+
+
 cli.add_command(list)
 cli.add_command(add)
 cli.add_command(add, name='a')
@@ -70,6 +76,8 @@ cli.add_command(uncomplete)
 cli.add_command(uncomplete, name='uc')
 cli.add_command(remove)
 cli.add_command(remove, name='r')
+cli.add_command(clear)
+cli.add_command(clear, name='c')
 
 def export_tasks(filename: str, tasks: list) -> None:
     try:
