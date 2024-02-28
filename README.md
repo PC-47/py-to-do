@@ -9,3 +9,13 @@ Simple Python TODO CLI Program
 - `tasks remove 2 3 4` removes multiple tasks, might have issues with index out of bounds
 - `tasks complete 5` sets the task at index 5 to complete
 - `tasks uncomplete 5` sets the task at index 5 to incomplete
+- `tasks insert 3 "thing to do"` inserts a new task at the given index
+- `tasks clear` clears the whole table
+
+## Shortcuts
+
+- `insert` -> `i`
+- `add` -> `a`
+- `remove` -> `r`
+- `complete` -> `c`
+- `uncomplete` -> `uc`
