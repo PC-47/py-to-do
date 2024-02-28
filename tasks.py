@@ -15,18 +15,26 @@ def cli(ctx):
 def list():
     '''Default function, prints list of all tasks'''
     tasks: list = import_tasks(tasks_file)
-    print("-" * 66)
-    print("| Index | Completion | Task                                      |")
-    print("-" * 66)
+    # get max task width
+    max_task_width: int = 0
+    for task in tasks:
+        task_width: int = len(task['task'])
+        if task_width > max_task_width:
+            max_task_width = task_width
+    
+
+    print("-" * (30 + max_task_width))
+    print("| Index | Completion | Task  " + (" " * max_task_width) + "|")
+    print("-" * (30 + max_task_width))
     for index,task in enumerate(tasks):
         output: str = f"|  {index:03}  |"
         if not task['complete']:
             output += "            |"
         else:
             output += "    done    |"
-        output += f" {task['task']:41} |"
+        output += f" {task['task']:{max_task_width + 5}} |"
         click.echo(output)
-    print("-" * 66)
+    print("-" * (30 + max_task_width))
 
 @click.command()
 @click.argument('task_name', type=str)
@@ -37,26 +45,26 @@ def add(task_name: str):
     export_tasks(tasks_file, tasks)    
 
 @click.command()
-@click.argument('task_index', type=int)
-def complete(task_index: int):
+@click.argument('index', type=int)
+def complete(index: int):
     '''Set the status of a task at an index to complete'''
     tasks = import_tasks(tasks_file)
-    tasks[task_index]['complete'] = True
+    tasks[index]['complete'] = True
     export_tasks(tasks_file, tasks)
 
 @click.command()
-@click.argument('task_index', type=int)
-def uncomplete(task_index: int):
+@click.argument('index', type=int)
+def uncomplete(index: int):
     '''Set the status of a task at an index to incomplete'''
     tasks = import_tasks(tasks_file)
-    tasks[task_index]['complete'] = False
+    tasks[index]['complete'] = False
     export_tasks(tasks_file, tasks)
 
 @click.command()
-@click.argument('task_indexes', nargs=-1, type=int)
-def remove(task_indexes: int):
+@click.argument('indexes', nargs=-1, type=int)
+def remove(indexes: int):
     '''Remove the tasks at given indexes'''
-    for index in task_indexes:
+    for index in indexes:
         tasks = import_tasks(tasks_file)
         tasks.pop(index)
         export_tasks(tasks_file, tasks)
@@ -64,6 +72,15 @@ def remove(task_indexes: int):
 @click.command()
 def clear():
     tasks = []
+    export_tasks(tasks_file, tasks)
+
+@click.command()
+@click.argument('index', type=int)
+@click.argument('task_name', type=str)
+def insert(index, task_name):
+    '''Insert new task at specified index'''
+    tasks = import_tasks(tasks_file)
+    tasks.insert(index, {'task': task_name, 'complete': False})
     export_tasks(tasks_file, tasks)
 
 
@@ -77,7 +94,8 @@ cli.add_command(uncomplete, name='uc')
 cli.add_command(remove)
 cli.add_command(remove, name='r')
 cli.add_command(clear)
-cli.add_command(clear, name='c')
+cli.add_command(insert)
+cli.add_command(insert, name='i')
 
 def export_tasks(filename: str, tasks: list) -> None:
     try:
