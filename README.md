@@ -19,3 +19,9 @@ Simple Python TODO CLI Program
 - `remove` -> `r`
 - `complete` -> `c`
 - `uncomplete` -> `uc`
+
+## Features to add
+
+- create empty tasks.json if it does not exist
+- ability to backup to local tasks.json.bak
+- adding a column for tracking category / tag of each task
