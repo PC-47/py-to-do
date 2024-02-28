@@ -25,3 +25,4 @@ Simple Python TODO CLI Program
 - create empty tasks.json if it does not exist
 - ability to backup to local tasks.json.bak
 - adding a column for tracking category / tag of each task
+- command to move a task to a different index
